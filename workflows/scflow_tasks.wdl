@@ -4,73 +4,111 @@ version 1.0
 
 workflow scflow_tasks {
 }
+# a struct is a user-defined type; it can contain members of any types
 
 task check_inputs {
-	input {
-	File manifest
-	File input
-	}
+     input {
+     File manifest_file
+     File input_file
+     }
 
-	command {
-	Rscript -e check_inputs.r --input input --manifest manifest
-	}
+     command {
+     curl https://raw.githubusercontent.com/combiz/nf-core-scflow/0.7.0dev/bin/check_inputs.r > check_inputs.r;
+     chmod +x *.r
+     ./check_inputs.r --samplesheet ~{input_file}  --manifest ~{manifest_file}
+}
 
-	output {
-	File checked_manifest = checked_manifest.txt
-	}
+     output {
+     File checked_manifest = "checked_manifest.txt"
+     }
 
-	runtime {
-	container: "combiz/scflow-docker:0.6.1"
-	}
+     runtime {
+     docker: "combiz/scflow-docker:0.6.1"
+     }
 }
 
 task scflow_qc {
-	input {
-	File  
-	File input
-	
-	}
+     input {
+     File input_file
+     File ensembl_mappings
+     Directory mat_path
+     String     qc_key_colname
+     String     qc_key
+     String     qc_factor_vars
+     Int     qc_min_library_size
+     String     qc_max_library_size
+     Int     qc_min_features
+     String     qc_max_features
+     String     qc_max_mito
+     Int     qc_min_ribo
+     Int     qc_max_ribo
+     Int     qc_min_counts
+     Int     dge_min_counts
+     Int     qc_min_cells
+     Int     integ_min_cells
+     Float     dge_min_cells_pc
+     Boolean     qc_drop_unmapped
+     Boolean     qc_drop_mito
+     Boolean     qc_drop_ribo
+     Float     qc_nmads
+     Boolean     mult_find_singlets
+     String     mult_singlets_method
+     String   mult_vars_to_regress_out
+     Int     mult_pca_dims
+     Int     mult_var_features
+     Int     mult_doublet_rate
+     Float     mult_pK
+     Float     mult_dpk
+     Boolean     amb_find_cells
+     Int     amb_lower
+     String     amb_retain
+     Float     amb_alpha_cutoff
+     Int     amb_niters
+     Int     amb_expect_cells
+     String     species
+     }
 
-	command {
-	Rscript -e scflow_qc.r --input input --mat_path matpath --key key --ensemble_mappings ensemble_mappings --key_colname params.qc_key_colname} \
-    --factor_vars params.qc_factor_vars} \
-    --min_library_size params.qc_min_library_size} \
-    --max_library_size params.qc_max_library_size} \
-    --min_features params.qc_min_features} \
-    --max_features params.qc_max_features} \
-    --max_mito params.qc_max_mito} \
-    --min_ribo params.qc_min_ribo} \
-    --max_ribo params.qc_max_ribo} \
-    --min_counts params.qc_min_counts} \
-    --min_cells params.qc_min_cells} \
-    --drop_unmapped params.qc_drop_unmapped} \
-    --drop_mito params.qc_drop_mito} \
-    --drop_ribo params.qc_drop_ribo} \
-    --nmads params.qc_nmads} \
-    --find_singlets params.mult_find_singlets} \
-    --singlets_method params.mult_singlets_method} \
-    --vars_to_regress_out params.mult_vars_to_regress_out} \
-    --pca_dims params.mult_pca_dims} \
-    --var_features params.mult_var_features} \
-    --doublet_rate params.mult_doublet_rate} \
-    --dpk params.mult_dpk} \
-    --pK params.mult_pK} \
-    --find_cells params.amb_find_cells} \
-    --lower params.amb_lower} \
-    --retain params.amb_retain} \
-    --alpha_cutoff params.amb_alpha_cutoff} \
-    --niters params.amb_niters \
-    --expect_cells params.amb_expect_cells} \
-    --species params.species}
-	}
+     command {
+     curl https://raw.githubusercontent.com/combiz/nf-core-scflow/dev/bin/scflow_qc.r  > scflow_qc.r;
+     chmod +x *.r
+     ./scflow_qc.r --input ~{input_file} --mat_path ~{mat_path} --key ~{qc_key} --ensembl_mappings ~{ensembl_mappings} --key_colname ~{qc_key_colname} \
+    --factor_vars ~{qc_factor_vars} \
+    --min_library_size ~{qc_min_library_size} \
+    --max_library_size ~{qc_max_library_size} \
+    --min_features ~{qc_min_features} \
+    --max_features ~{qc_max_features} \
+    --max_mito ~{qc_max_mito} \
+    --min_ribo ~{qc_min_ribo} \
+    --max_ribo ~{qc_max_ribo} \
+    --min_counts ~{qc_min_counts} \
+    --min_cells ~{qc_min_cells} \
+    --drop_unmapped ~{qc_drop_unmapped} \
+    --drop_mito ~{qc_drop_mito} \
+    --drop_ribo ~{qc_drop_ribo} \
+    --nmads ~{qc_nmads} \
+    --find_singlets ~{mult_find_singlets} \
+    --singlets_method ~{mult_singlets_method} \
+    --vars_to_regress_out ~{mult_vars_to_regress_out} \
+    --pca_dims ~{mult_pca_dims} \
+    --var_features ~{mult_var_features} \
+    --doublet_rate ~{mult_doublet_rate} \
+    --dpk ~{mult_dpk} \
+    --pK ~{mult_pK} \
+    --find_cells ~{amb_find_cells} \
+    --lower ~{amb_lower} \
+    --retain ~{amb_retain} \
+    --alpha_cutoff ~{amb_alpha_cutoff} \
+    --niters ~{amb_niters} \
+    --expect_cells ~{amb_expect_cells} \
+    --species ~{species} }
 
-	output {
-	File checked_manifest = checked_manifest.txt
-	}
+     output {
+     File checked_manifest = "checked_manifest.txt"
+     }
 
-	runtime {
-	container: "combiz/scflow-docker:0.6.1"
-	}
+     runtime {
+     docker: "combiz/scflow-docker:0.6.1"
+     }
 }
 
 
