@@ -1,6 +1,5 @@
 version 1.0
 
-#import "scflow_params.json" as params
 import "scflow_tasks.wdl" as tasks
 
 struct BaseParams {
@@ -19,8 +18,8 @@ workflow scflow {
 		File input_file 
 		File manifest_file 
 		File ensembl_mappings
-		Directory ctd_path
-		Directory mat_path
+		File ctd_path
+		File mat_path
 		String     qc_key_colname
 		String  qc_key
 		String     qc_factor_vars

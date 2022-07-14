@@ -1,4 +1,4 @@
-version: 0.1
+version: 1.0
 workflows:
   - subclass: WDL
     primaryDescriptorPath: /workflows/scflow.wdl
@@ -6,4 +6,3 @@ workflows:
       - /workflows/scflow_analysis.json
     authors:
       - orcid: 0000-0001-8795-5472
-
