@@ -152,52 +152,52 @@ workflow scflow {
 		Int    max_cores
 	}
 
-	#call tasks.check_inputs as check_inputs {
-	#	input:
- # 			input_file = input_file,
- # 			manifest_file = manifest_file
-	#}
-
-	call tasks.scflow_qc as scflow_qc {
-		input:	
-  	      input_file = input_file,
-          mat_path = mat_path,
-		  ensembl_mappings = ensembl_mappings,
-		  qc_key_colname = qc_key_colname,
-		  qc_key = qc_key,
-		  qc_factor_vars = qc_factor_vars,
-		  qc_min_library_size = qc_min_library_size,
-		  qc_max_library_size = qc_max_library_size,
-		  qc_min_features = qc_min_features,
-		  qc_max_features = qc_max_features,
-		  qc_max_mito = qc_max_mito,
-		  qc_min_ribo = qc_min_ribo,
-		  qc_max_ribo = qc_max_ribo,
-		  qc_min_counts = qc_min_counts,
-		  dge_min_counts = dge_min_counts,
-		  qc_min_cells = qc_min_cells,
-		  integ_min_cells = integ_min_cells,
-		  dge_min_cells_pc = dge_min_cells_pc,
-		  qc_drop_unmapped = qc_drop_unmapped,
-		  qc_drop_mito = qc_drop_mito,
-		  qc_drop_ribo = qc_drop_ribo,
-		  qc_nmads = qc_nmads,
-		  mult_find_singlets = mult_find_singlets,
-		  mult_singlets_method = mult_singlets_method,
-		  mult_vars_to_regress_out = mult_vars_to_regress_out,
-		  mult_pca_dims = mult_pca_dims,
-		  mult_var_features = mult_var_features,
-		  mult_doublet_rate = mult_doublet_rate,
-		  mult_pK = mult_pK,
-		  mult_dpk = mult_dpk,
-		  amb_find_cells = amb_find_cells,
-		  amb_lower = amb_lower,
-		  amb_retain = amb_retain,
-		  amb_alpha_cutoff = amb_alpha_cutoff,
-		  amb_niters = amb_niters,
-		  amb_expect_cells = amb_expect_cells,
-		  species = species,
-	}  
+	call tasks.check_inputs as check_inputs {
+		input:
+  			input_file = input_file,
+  			manifest_file = manifest_file
+	}
+#
+#	call tasks.scflow_qc as scflow_qc {
+#		input:	
+#  	      input_file = input_file,
+#          mat_path = mat_path,
+#		  ensembl_mappings = ensembl_mappings,
+#		  qc_key_colname = qc_key_colname,
+#		  qc_key = qc_key,
+#		  qc_factor_vars = qc_factor_vars,
+#		  qc_min_library_size = qc_min_library_size,
+#		  qc_max_library_size = qc_max_library_size,
+#		  qc_min_features = qc_min_features,
+#		  qc_max_features = qc_max_features,
+#		  qc_max_mito = qc_max_mito,
+#		  qc_min_ribo = qc_min_ribo,
+#		  qc_max_ribo = qc_max_ribo,
+#		  qc_min_counts = qc_min_counts,
+#		  dge_min_counts = dge_min_counts,
+#		  qc_min_cells = qc_min_cells,
+#		  integ_min_cells = integ_min_cells,
+#		  dge_min_cells_pc = dge_min_cells_pc,
+#		  qc_drop_unmapped = qc_drop_unmapped,
+#		  qc_drop_mito = qc_drop_mito,
+#		  qc_drop_ribo = qc_drop_ribo,
+#		  qc_nmads = qc_nmads,
+#		  mult_find_singlets = mult_find_singlets,
+#		  mult_singlets_method = mult_singlets_method,
+#		  mult_vars_to_regress_out = mult_vars_to_regress_out,
+#		  mult_pca_dims = mult_pca_dims,
+#		  mult_var_features = mult_var_features,
+#		  mult_doublet_rate = mult_doublet_rate,
+#		  mult_pK = mult_pK,
+#		  mult_dpk = mult_dpk,
+#		  amb_find_cells = amb_find_cells,
+#		  amb_lower = amb_lower,
+#		  amb_retain = amb_retain,
+#		  amb_alpha_cutoff = amb_alpha_cutoff,
+#		  amb_niters = amb_niters,
+#		  amb_expect_cells = amb_expect_cells,
+#		  species = species,
+#	}  
 
 	output {
 	File checked_manifest = "checked_manifest.txt"
