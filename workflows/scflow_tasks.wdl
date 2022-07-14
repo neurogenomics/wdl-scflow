@@ -22,7 +22,6 @@ task check_inputs {
         email: "eduff@imperial.ac.uk"
         description: "![build_status](https://quay.io/repository/collaboratory/dockstore-tool-bamstats/status) A Docker container for the BAMStats command. See the [BAMStats](http://bamstats.sourceforge.net/) website for more information."
     }
-}
 
      output {
      File checked_manifest = "checked_manifest.txt"
