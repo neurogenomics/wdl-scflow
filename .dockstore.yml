@@ -1,0 +1,9 @@
+version: 0.1
+workflows:
+  - subclass: WDL
+    primaryDescriptorPath: /workflows/scflow.wdl
+    testParameterFiles:
+      - /workflows/scflow_analysis.json
+    authors:
+      - orcid: 0000-0001-8795-5472
+
