@@ -16,6 +16,12 @@ task check_inputs {
      curl https://raw.githubusercontent.com/combiz/nf-core-scflow/0.7.0dev/bin/check_inputs.r > check_inputs.r;
      chmod +x *.r
      ./check_inputs.r --samplesheet ~{input_file}  --manifest ~{manifest_file}
+	}
+    meta {
+        author: "Eugene Duff"
+        email: "eduff@imperial.ac.uk"
+        description: "![build_status](https://quay.io/repository/collaboratory/dockstore-tool-bamstats/status) A Docker container for the BAMStats command. See the [BAMStats](http://bamstats.sourceforge.net/) website for more information."
+    }
 }
 
      output {
