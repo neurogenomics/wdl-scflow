@@ -16,19 +16,14 @@ task check_inputs {
      curl https://raw.githubusercontent.com/combiz/nf-core-scflow/0.7.0dev/bin/check_inputs.r > check_inputs.r;
      chmod +x *.r
      ./check_inputs.r --samplesheet ~{input_file}  --manifest ~{manifest_file}
-	}
-    meta {
-        author: "Eugene Duff"
-        email: "eduff@imperial.ac.uk"
-        description: "![build_status](https://quay.io/repository/collaboratory/dockstore-tool-bamstats/status) A Docker container for the BAMStats command. See the [BAMStats](http://bamstats.sourceforge.net/) website for more information."
-    }
+}
 
      output {
      File checked_manifest = "checked_manifest.txt"
      }
 
      runtime {
-     docker: "combiz/scflow-docker:0.6.1"
+     docker: "eugeneduff/scflow-wdl:1.0"
      }
 }
 
@@ -36,7 +31,7 @@ task scflow_qc {
      input {
      File input_file
      File ensembl_mappings
-     File mat_path
+     Directory mat_path
      String     qc_key_colname
      String     qc_key
      String     qc_factor_vars
@@ -76,6 +71,12 @@ task scflow_qc {
      command {
      curl https://raw.githubusercontent.com/combiz/nf-core-scflow/dev/bin/scflow_qc.r  > scflow_qc.r;
      chmod +x *.r
+
+     # extract data 
+     # pull in data 
+
+     
+
      ./scflow_qc.r --input ~{input_file} --mat_path ~{mat_path} --key ~{qc_key} --ensembl_mappings ~{ensembl_mappings} --key_colname ~{qc_key_colname} \
     --factor_vars ~{qc_factor_vars} \
     --min_library_size ~{qc_min_library_size} \
@@ -112,7 +113,7 @@ task scflow_qc {
      }
 
      runtime {
-     docker: "combiz/scflow-docker:0.6.1"
+     docker: "eugeneduff/scflow-wdl:1.0"
      }
 }
 
