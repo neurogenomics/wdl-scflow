@@ -4,7 +4,7 @@ version 1.0
 
 workflow scflow_tasks {
 }
-# a struct is a user-defined type; it can contain members of any types
+# sdf  a struct is a user-defined type; it can contain members of any types
 
 task check_inputs {
      input {
