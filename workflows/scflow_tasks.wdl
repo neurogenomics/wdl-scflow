@@ -10,9 +10,13 @@ task check_inputs {
      input {
      File manifest_file
      File input_file
+     String mat_path
      }
 
      command {
+     mkdir -r mat_path
+     strato cp --backend gcp -m ~{mat_path}/* mat_path/
+
      curl https://raw.githubusercontent.com/combiz/nf-core-scflow/0.7.0dev/bin/check_inputs.r > check_inputs.r;
      chmod +x *.r
      ./check_inputs.r --samplesheet ~{input_file}  --manifest ~{manifest_file}
@@ -75,7 +79,8 @@ task scflow_qc {
      # extract data 
      # pull in data 
 
-     
+     mkdir -p ~{mat_path}
+     strato -
 
      ./scflow_qc.r --input ~{input_file} --mat_path ~{mat_path} --key ~{qc_key} --ensembl_mappings ~{ensembl_mappings} --key_colname ~{qc_key_colname} \
     --factor_vars ~{qc_factor_vars} \
