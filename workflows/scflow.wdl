@@ -19,7 +19,7 @@ workflow scflow {
 		File manifest_file 
 		File ensembl_mappings
 		File ctd_path
-		File mat_path
+		String mat_path
 		String     qc_key_colname
 		String  qc_key
 		String     qc_factor_vars
@@ -156,12 +156,13 @@ workflow scflow {
 		input:
   			input_file = input_file,
   			manifest_file = manifest_file
+			mat_path = mat_path
 	}
 #
 #	call tasks.scflow_qc as scflow_qc {
 #		input:	
 #  	      input_file = input_file,
-#          mat_path = mat_path,
+#         mat_path = mat_path,
 #		  ensembl_mappings = ensembl_mappings,
 #		  qc_key_colname = qc_key_colname,
 #		  qc_key = qc_key,
