@@ -29,11 +29,11 @@ task check_inputs {
 
      runtime {
      docker: "eugeneduff/scflow-wdl:1.0"
-     memory: 120
-     bootDiskSizeGb: 12
+     memory: "120G"
+     bootDiskSizeGb: "12"
      disks: "local-disk 100 HDD"
      cpu: 1
-     preemptible: preemptible
+     preemptible: 1
      maxRetries: 0
      }
 }
