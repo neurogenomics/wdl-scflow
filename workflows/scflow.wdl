@@ -155,7 +155,7 @@ workflow scflow {
 	call tasks.check_inputs as check_inputs {
 		input:
   			input_file = input_file,
-  			manifest_file = manifest_file
+  			manifest_file = manifest_file,
 			mat_path = mat_path
 	}
 #
