@@ -16,7 +16,8 @@ task check_inputs {
      command {
      mkdir -r mat_path
      strato cp --backend gcp -m ~{mat_path}/* mat_path/
-
+     ls -d matlab/*
+     
      curl https://raw.githubusercontent.com/combiz/nf-core-scflow/0.7.0dev/bin/check_inputs.r > check_inputs.r;
      chmod +x *.r
      ./check_inputs.r --samplesheet ~{input_file}  --manifest ~{manifest_file}
@@ -28,6 +29,12 @@ task check_inputs {
 
      runtime {
      docker: "eugeneduff/scflow-wdl:1.0"
+        memory: 120G
+        bootDiskSizeGb: 12
+        disks: "local-disk 100 HDD"
+        cpu: 1
+        preemptible: preemptible
+        maxRetries: 0
      }
 }
 
