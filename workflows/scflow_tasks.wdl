@@ -18,7 +18,7 @@ task check_inputs {
      mkdir -p mat_path
      echo strato
      strato cp --backend gcp -m "gs://fc-secure-896483dd-92ea-4ff6-913d-3d96c60e6a45/IGF112633/" " /"
-     strato cp --backend gcp -m "gs://terra-featured-workspaces/Cumulus/sample_sheet.csv" " mat_path"
+     strato cp --backend gcp -m "gs://terra-featured-workspaces/Cumulus/sample_sheet.csv" " ."
      ls -d mat_path/*
 
      curl https://raw.githubusercontent.com/combiz/nf-core-scflow/0.7.0dev/bin/check_inputs.r > check_inputs.r;
