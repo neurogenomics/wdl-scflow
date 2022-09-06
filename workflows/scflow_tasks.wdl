@@ -14,7 +14,9 @@ task check_inputs {
      }
 
      command {
+     echo mkdir
      mkdir -p mat_path
+     echo strato
      strato cp --backend gcp -m "gs://fc-secure-896483dd-92ea-4ff6-913d-3d96c60e6a45/IGF112633/" " /"
      ls -d matlab/*
 
