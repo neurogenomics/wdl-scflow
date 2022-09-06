@@ -19,7 +19,7 @@ task check_inputs {
      echo strato
      strato cp --backend gcp -m "gs://fc-secure-896483dd-92ea-4ff6-913d-3d96c60e6a45/IGF112633/" " /"
      echo strato
-     strato cp --backend gcp -m "gs://terra-featured-workspaces/Cumulus/sample_sheet.csv" " ."
+     strato cp --backend gcp -m "gs://terra-featured-workspaces/Cumulus/sample_sheet.csv" " test.csv"
      echo ls
      ls -d *
 
