@@ -14,7 +14,7 @@ task check_inputs {
      }
 
      command {
-     mkdir -r mat_path
+     mkdir -p mat_path
      strato cp --backend gcp -m ~{mat_path} mat_path/
      ls -d matlab/*
 
@@ -28,7 +28,7 @@ task check_inputs {
      }
 
      runtime {
-     docker: "eugeneduff/scflow-wdl:1.0"
+     docker: "eugeneduff/scflow-wdl:0.1"
      memory: "120G"
      bootDiskSizeGb: "12"
      disks: "local-disk 100 HDD"
@@ -125,7 +125,7 @@ task scflow_qc {
      }
 
      runtime {
-     docker: "eugeneduff/scflow-wdl:1.0"
+     docker: "eugeneduff/scflow-wdl:0.1"
      }
 }
 
