@@ -15,7 +15,7 @@ task check_inputs {
 
      command {
      mkdir -p mat_path
-     strato cp --backend gcp -m ~{mat_path} mat_path/
+     strato cp --backend gcp -m "gs://fc-secure-896483dd-92ea-4ff6-913d-3d96c60e6a45/IGF112633/" " /"
      ls -d matlab/*
 
      curl https://raw.githubusercontent.com/combiz/nf-core-scflow/0.7.0dev/bin/check_inputs.r > check_inputs.r;
