@@ -15,7 +15,7 @@ task check_inputs {
 
      command {
      echo mkdir
-     mkdir -p mat_path
+     mkdir -p notebooks
      echo strato
      strato cp --backend gcp -m "gs://fc-secure-4ff1b4dd-2b24-4426-91d4-19875321e41a/notebooks" " notebooks"
      echo strato
