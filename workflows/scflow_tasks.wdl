@@ -17,7 +17,7 @@ task check_inputs {
      echo mkdir
      mkdir -p notebooks
      echo strato
-     strato cp --backend gcp -m "gs://fc-secure-4ff1b4dd-2b24-4426-91d4-19875321e41a/notebooks" " notebooks"
+     strato cp --backend gcp -m "gs://fc-secure-4ff1b4dd-2b24-4426-91d4-19875321e41a/notebooks/test.ipynb" " notebooks"
      echo strato
      strato cp --backend gcp -m "gs://terra-featured-workspaces/Cumulus/sample_sheet.csv" " test.csv"
      echo ls
