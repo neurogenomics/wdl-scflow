@@ -18,12 +18,12 @@ task check_inputs {
      mkdir -p IGF112633
 
      echo strato
-     strato sync --backend gcp -m "gs://fc-secure-4ff1b4dd-2b24-4426-91d4-19875321e41a/Data/IGF112633" " IGF112633"
-     strato sync --backend gcp -m "gs://fc-secure-4ff1b4dd-2b24-4426-91d4-19875321e41a/Data/IGF112646" " IGF112646"
+     strato sync --backend gcp -m "gs://fc-secure-4ff1b4dd-2b24-4426-91d4-19875321e41a/Data/IGF112633" "IGF112633"
+     strato sync --backend gcp -m "gs://fc-secure-4ff1b4dd-2b24-4426-91d4-19875321e41a/Data/IGF112646" "IGF112646"
      echo strato
      strato cp --backend gcp -m "gs://terra-featured-workspaces/Cumulus/sample_sheet.csv" " test.csv"
      echo ls
-     ls -d IGF*/*
+     ls -d */*
 
      curl https://raw.githubusercontent.com/combiz/nf-core-scflow/0.7.0dev/bin/check_inputs.r > check_inputs.r;
      chmod +x *.r
