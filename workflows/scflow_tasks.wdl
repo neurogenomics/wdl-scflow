@@ -22,7 +22,7 @@ task check_inputs {
      echo strato
      strato cp --backend gcp -m "gs://terra-featured-workspaces/Cumulus/sample_sheet.csv" " test.csv"
      echo ls
-     ls -d *
+     ls -d IGF*/
 
      curl https://raw.githubusercontent.com/combiz/nf-core-scflow/0.7.0dev/bin/check_inputs.r > check_inputs.r;
      chmod +x *.r
