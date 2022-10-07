@@ -126,7 +126,7 @@ task scflow_qc {
     --species ~{species} }
 
      output {
-     File checked_manifest = "qc_plot_data/"+~{qc_key}+"_count_depth_distribution.tsv"
+     File checked_manifest = "qc_plot_data/"+ qc_key +"_count_depth_distribution.tsv"
      }
 
      runtime {
