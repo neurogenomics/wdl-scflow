@@ -93,9 +93,6 @@ task scflow_qc {
      # extract data 
      # pull in data 
 
-     mkdir -p ~{mat_path}
-     strato -
-
      ./scflow_qc.r --input ~{input_file} --mat_path ~{mat_path} --key ~{qc_key} --ensembl_mappings ~{ensembl_mappings} --key_colname ~{qc_key_colname} \
     --factor_vars ~{qc_factor_vars} \
     --min_library_size ~{qc_min_library_size} \
@@ -133,6 +130,12 @@ task scflow_qc {
 
      runtime {
      docker: "eugeneduff/scflow-wdl:0.1"
+     memory: "120G"
+     bootDiskSizeGb: "12"
+     disks: "local-disk 100 HDD"
+     cpu: 1
+     preemptible: 1
+     maxRetries: 0
      }
 }
 
