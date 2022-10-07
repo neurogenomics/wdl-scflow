@@ -50,6 +50,7 @@ task scflow_qc {
      File input_file
      File ensembl_mappings
      File mat_path
+     File manifest_file
      String     qc_key_colname
      String     qc_key
      String     qc_factor_vars
