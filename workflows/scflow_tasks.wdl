@@ -128,7 +128,7 @@ task scflow_qc {
      runtime {
      docker: "eugeneduff/scflow-wdl:0.1"
      memory: "120G"
-     bootDiskSizeGb: "12"
+     bootDiskSizeGb: "16"
      disks: "local-disk 100 HDD"
      cpu: 1
      preemptible: 1
