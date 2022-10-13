@@ -10,21 +10,11 @@ task check_inputs {
      input {
      File manifest_file
      File input_file
-     String mat_path
+     File mat_path
      }
 
      command {
-     echo mkdir
-     mkdir -p IGF112633
-
-     echo strato
-     strato sync --backend gcp -m "gs://fc-secure-4ff1b4dd-2b24-4426-91d4-19875321e41a/Data/IGF112633" "IGF112633"
-     strato sync --backend gcp -m "gs://fc-secure-4ff1b4dd-2b24-4426-91d4-19875321e41a/Data/IGF112646" "IGF112646"
-     echo strato
-     strato cp --backend gcp -m "gs://terra-featured-workspaces/Cumulus/sample_sheet.csv" " test.csv"
-     echo ls
-     ls -d */*
-
+     
      curl https://raw.githubusercontent.com/combiz/nf-core-scflow/0.7.0dev/bin/check_inputs.r > check_inputs.r;
      chmod +x *.r
      ./check_inputs.r --samplesheet ~{input_file}  --manifest ~{manifest_file}
@@ -49,7 +39,7 @@ task scflow_qc {
      input {
      File input_file
      File ensembl_mappings
-     String mat_path
+     File mat_path
      File manifest_file
      String     qc_key_colname
      String     qc_key
@@ -94,7 +84,13 @@ task scflow_qc {
      # extract data 
      # pull in data 
 
-     ./scflow_qc.r --input ~{input_file} --mat_path ~{mat_path} --key ~{qc_key} --ensembl_mappings ~{ensembl_mappings} --key_colname ~{qc_key_colname} \
+     mkdir -p mat_folder 
+
+     # strato sync --backend gcp -m ~{mat_path} "mat_path"
+     wget ~{mat_path}
+     unzip individual_1.zip -d ./mat_folder
+
+     ./scflow_qc.r --input ~{input_file} --mat_path ./mat_folder --key ~{qc_key} --ensembl_mappings ~{ensembl_mappings} --key_colname ~{qc_key_colname} \
     --factor_vars ~{qc_factor_vars} \
     --min_library_size ~{qc_min_library_size} \
     --max_library_size ~{qc_max_library_size} \
