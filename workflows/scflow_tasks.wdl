@@ -10,7 +10,7 @@ task check_inputs {
      input {
      File manifest_file
      File input_file
-     File mat_path
+     String mat_path
      }
 
      command {
@@ -39,7 +39,7 @@ task scflow_qc {
      input {
      File input_file
      File ensembl_mappings
-     File mat_path
+     String mat_path
      File manifest_file
      String     qc_key_colname
      String     qc_key
