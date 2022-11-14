@@ -10,23 +10,27 @@ task check_inputs {
      input {
      File manifest_file
      File input_file
-     String mat_path
      }
 
-     command {
+     command <<<
      
      curl https://raw.githubusercontent.com/combiz/nf-core-scflow/0.7.0dev/bin/check_inputs.r > check_inputs.r;
      chmod +x *.r
      ./check_inputs.r --samplesheet ~{input_file}  --manifest ~{manifest_file}
-}
+
+     cat Manifest_TERRA.txt  | awk '(NR>1)' | awk {' print $1 '}  > keys.txt
+     
+>>>
 
      output {
      File checked_manifest = "checked_manifest.txt"
+     Array[String] keys = read_lines("keys.txt")
+
      }
 
      runtime {
      docker: "eugeneduff/scflow-wdl:0.1"
-     memory: "120G"
+     memory: "12G"
      bootDiskSizeGb: "12"
      disks: "local-disk 100 HDD"
      cpu: 1
@@ -35,11 +39,11 @@ task check_inputs {
      }
 }
 
+
 task scflow_qc {
      input {
      File input_file
      File ensembl_mappings
-     String mat_path
      File manifest_file
      String     qc_key_colname
      String     qc_key
@@ -77,20 +81,19 @@ task scflow_qc {
      String     species
      }
 
-     command {
+     command <<<
      curl https://raw.githubusercontent.com/combiz/nf-core-scflow/dev/bin/scflow_qc.r  > scflow_qc.r;
      chmod +x *.r
 
-     # extract data 
-     # pull in data 
-
      mkdir -p mat_folder 
 
-     # strato sync --backend gcp -m ~{mat_path} "mat_path"
-     wget ~{mat_path}
-     unzip individual_1.zip -d ./mat_folder
+     mat_path=`cat ~{manifest_file} | grep ~{qc_key} | awk 'NR>1' | awk {' print $2 '}`
 
-     ./scflow_qc.r --input ~{input_file} --mat_path ./mat_folder --key ~{qc_key} --ensembl_mappings ~{ensembl_mappings} --key_colname ~{qc_key_colname} \
+     strato sync --backend gcp -m $mat_path "mat_path"
+     #wget mat_path
+     #unzip individual_1.zip -d ./mat_folder
+
+     ./scflow_qc.r --input ~{input_file} --mat_path ./mat_path --key ~{qc_key} --ensembl_mappings ~{ensembl_mappings} --key_colname ~{qc_key_colname} \
     --factor_vars ~{qc_factor_vars} \
     --min_library_size ~{qc_min_library_size} \
     --max_library_size ~{qc_max_library_size} \
@@ -119,7 +122,7 @@ task scflow_qc {
     --alpha_cutoff ~{amb_alpha_cutoff} \
     --niters ~{amb_niters} \
     --expect_cells ~{amb_expect_cells} \
-    --species ~{species} }
+    --species ~{species} >>>
 
      output {
      File checked_manifest = "qc_plot_data/"+ qc_key +"_count_depth_distribution.tsv"

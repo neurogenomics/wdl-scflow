@@ -157,18 +157,15 @@ workflow scflow {
 			}
 
 
-	Map[String, String] manifest =  read_map(manifest_file)
-
-    scatter ( manifest_row in as_pairs(manifest) ) {
+    scatter ( manifest_key in check_inputs.keys ) {
 
 		call tasks.scflow_qc as scflow_qc {
 			input:	
 			input_file = input_file,
-			mat_path = manifest_row.right,
 			manifest_file = manifest_file,
 			ensembl_mappings = ensembl_mappings,
 			qc_key_colname = qc_key_colname,
-			qc_key = manifest_row.left,
+			qc_key = manifest_key,
 			qc_factor_vars = qc_factor_vars,
 			qc_min_library_size = qc_min_library_size,
 			qc_max_library_size = qc_max_library_size,
