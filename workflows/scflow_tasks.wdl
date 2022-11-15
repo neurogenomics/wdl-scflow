@@ -89,18 +89,18 @@ task scflow_qc {
 
      mat_path=`cat ~{manifest_file} | grep ~{qc_key} | awk 'NR>1' | awk {' print $2 '}`
      echo `cat ~{manifest_file} | grep ~{qc_key} | awk 'NR>1' | awk {' print $2 '}`
-     strato sync --backend gcp -m $mat_path "mat_path"
+     strato sync --backend gcp -m "$mat_path" "mat_path"
 
-     if [[ -d ${mat_path} ]]; then
-        echo "${mat_path} is a directory"
-        MATPATH=${mat_path}
-    elif [[ -f ${mat_path} ]]; then
-        echo "${mat_path} is a file"
-        mkdir mat_folder && unzip ${mat_path} -d ./mat_folder
+     if [[ -d "${mat_path}" ]]; then
+        echo "${mat_path}" is a directory"
+        MATPATH="${mat_path}"
+    elif [[ -f "${mat_path}" ]]; then
+        echo "mat_path is a file"
+        mkdir mat_folder && unzip "${mat_path}" -d ./mat_folder
         MATPATH=mat_folder
     else
         echo "${mat_path} is not valid"
-        MATPATH=${mat_path}
+        MATPATH="${mat_path}"
         exit 1
     fi
 
@@ -111,7 +111,7 @@ task scflow_qc {
      #wget mat_path
      #unzip individual_1.zip -d ./mat_folder
 
-     ./scflow_qc.r --input ~{input_file} --mat_path $MATPATH --key ~{qc_key} --ensembl_mappings ~{ensembl_mappings} --key_colname ~{qc_key_colname} \
+     ./scflow_qc.r --input ~{input_file} --mat_path "${MATPATH}" --key ~{qc_key} --ensembl_mappings ~{ensembl_mappings} --key_colname ~{qc_key_colname} \
     --factor_vars ~{qc_factor_vars} \
     --min_library_size ~{qc_min_library_size} \
     --max_library_size ~{qc_max_library_size} \
