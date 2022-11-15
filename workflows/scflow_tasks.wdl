@@ -88,9 +88,12 @@ task scflow_qc {
      mkdir -p mat_folder 
      hi=sdf
      mat_path=`cat ~{manifest_file} | grep ~{qc_key} | awk {' print $2 '}`
-   
-     strato sync --backend gcp -m "$mat_path" "mat_path"
+     echo mat_path $mat_path
 
+     strato sync --backend gcp -m "$mat_path" "mat_path"
+     echo ls 
+     ls
+     
      if [[ -d "${mat_path}" ]]; then
         echo "${mat_path} is a directory"
         MATPATH="${mat_path}"
@@ -104,9 +107,9 @@ task scflow_qc {
         exit 1
     fi
 
-     hi=123
-     echo "${hi}"
-     echo "${hi}" > tmp.txt
+
+     echo MATPATH $MATPATH
+
 
      #wget mat_path
      #unzip individual_1.zip -d ./mat_folder
