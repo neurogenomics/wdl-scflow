@@ -92,7 +92,7 @@ task scflow_qc {
      strato sync --backend gcp -m "$mat_path" "mat_path"
 
      if [[ -d "${mat_path}" ]]; then
-        echo "${mat_path}" is a directory"
+        echo "${mat_path} is a directory"
         MATPATH="${mat_path}"
     elif [[ -f "${mat_path}" ]]; then
         echo "mat_path is a file"
