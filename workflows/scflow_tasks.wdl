@@ -18,7 +18,7 @@ task check_inputs {
      chmod +x *.r
      ./check_inputs.r --samplesheet ~{input_file}  --manifest ~{manifest_file}
 
-     cat Manifest_TERRA.txt  | awk '(NR>1)' | awk {' print $1 '}  > keys.txt
+     cat ~{manifest_file}  | awk '(NR>1)' | awk {' print $1 '}  > keys.txt
      
 >>>
 
