@@ -1,0 +1,7 @@
+key	filepath
+rinuv	gs://fc-secure-896483dd-92ea-4ff6-913d-3d96c60e6a45/IGF112633/
+finov	gs://fc-secure-896483dd-92ea-4ff6-913d-3d96c60e6a45/IGF112633/ 
+jafap	gs://fc-secure-896483dd-92ea-4ff6-913d-3d96c60e6a45/IGF112633/ 
+rigap	gs://fc-secure-896483dd-92ea-4ff6-913d-3d96c60e6a45/IGF112633/ 
+vihigv	gs://fc-secure-896483dd-92ea-4ff6-913d-3d96c60e6a45/IGF112633/  
+bamum	gs://fc-secure-896483dd-92ea-4ff6-913d-3d96c60e6a45/IGF112633/ 
