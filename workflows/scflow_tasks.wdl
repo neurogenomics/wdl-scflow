@@ -105,8 +105,8 @@ task scflow_qc {
     fi
 
      hi=123
-     echo ${hi}
-     echo ${hi} > tmp.txt
+     echo "${hi}"
+     echo "${hi}" > tmp.txt
 
      #wget mat_path
      #unzip individual_1.zip -d ./mat_folder
