@@ -86,9 +86,12 @@ task scflow_qc {
      chmod +x *.r
 
      mkdir -p mat_folder 
-
+     hi=sdf
      mat_path=`cat ~{manifest_file} | grep ~{qc_key} | awk 'NR>1' | awk {' print $2 '}`
      echo `cat ~{manifest_file} | grep ~{qc_key} | awk 'NR>1' | awk {' print $2 '}`
+     echo test "$hi" test $hi
+     cat ~{manifest_file}
+     
      strato sync --backend gcp -m "$mat_path" "mat_path"
 
      if [[ -d "${mat_path}" ]]; then
