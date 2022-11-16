@@ -90,10 +90,12 @@ task scflow_qc {
      echo mat_path $mat_path
 
      strato sync --backend gcp -m "$mat_path" "mat_path"
+     echo ls 
+     ls
 
      if [[ -d mat_path ]]; then
         echo "${mat_path} is a directory"
-        MATPATH="${mat_path}"
+        MATPATH=mat_path
     elif [[ -f mat_path ]]; then
         echo "${mat_path} is a file, unzipping"
         mkdir mat_folder && unzip mat_path -d ./mat_folder
