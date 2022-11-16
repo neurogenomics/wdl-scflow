@@ -14,7 +14,7 @@ task check_inputs {
 
      command <<<
      
-     curl https://raw.githubusercontent.com/combiz/nf-core-scflow/0.7.0dev/bin/check_inputs.r > check_inputs.r;
+     curl https://raw.githubusercontent.com/neurogenomics/wdl-scflow/master/workflows/r/check_inputs.r > check_inputs.r;
      chmod +x *.r
      ./check_inputs.r --samplesheet ~{input_file}  --manifest ~{manifest_file}
 
@@ -82,7 +82,7 @@ task scflow_qc {
      }
 
      command <<<
-     curl https://raw.githubusercontent.com/combiz/nf-core-scflow/dev/bin/scflow_qc.r  > scflow_qc.r;
+     curl https://raw.githubusercontent.com/neurogenomics/wdl-scflow/master/workflows/r/scflow_qc.r  > scflow_qc.r;
      chmod +x *.r
 
      mkdir -p mat_folder 
@@ -93,7 +93,7 @@ task scflow_qc {
      strato sync --backend gcp -m "$mat_path" "mat_path"
      echo ls 
      ls
-     
+
      if [[ -d "${mat_path}" ]]; then
         echo "${mat_path} is a directory"
         MATPATH="${mat_path}"
