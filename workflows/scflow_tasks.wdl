@@ -91,8 +91,6 @@ task scflow_qc {
      
      mkdir mat_path
      strato sync --backend gcp -m "$mat_path" "mat_path"
-     echo ls 
-     ls
 
      if [[ -d mat_path ]]; then
         echo "${mat_path} is a directory"
@@ -144,7 +142,14 @@ task scflow_qc {
     --alpha_cutoff ~{amb_alpha_cutoff} \
     --niters ~{amb_niters} \
     --expect_cells ~{amb_expect_cells} \
-    --species ~{species} >>>
+    --species ~{species} 
+    
+    echo ls 
+    ls
+
+    strato cp -r --backend gcp -m qc_plot_data $mat_path/qc_plot_data
+
+    >>>
 
      output {
      File count_depth = "qc_plot_data/"+ qc_key +"_count_depth_distribution.tsv"
