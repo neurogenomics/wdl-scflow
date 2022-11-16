@@ -51,7 +51,7 @@ manifest <- read.delim(args$manifest)
 #  RCurl::url.exists(filepath) |
 #  dir.exists(filepath) |
 #  any(startsWith(filepath, c("gs://", "s3://")))
-}#
+#}
 
 #dir_exists <- purrr::pmap_lgl(manifest, ~ check_exists(as.character(..2)))
 
