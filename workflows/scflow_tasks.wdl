@@ -94,12 +94,12 @@ task scflow_qc {
      echo ls 
      ls
 
-     if [[ -d "${mat_path}" ]]; then
+     if [[ -d mat_path ]]; then
         echo "${mat_path} is a directory"
         MATPATH="${mat_path}"
-    elif [[ -f "${mat_path}" ]]; then
-        echo "mat_path is a file"
-        mkdir mat_folder && unzip "${mat_path}" -d ./mat_folder
+    elif [[ -f mat_path ]]; then
+        echo "${mat_path} is a file"
+        mkdir mat_folder && unzip mat_path -d ./mat_folder
         MATPATH=mat_folder
     else
         echo "${mat_path} is not valid"
