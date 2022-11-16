@@ -16,7 +16,7 @@ task check_inputs {
      echo hihi
      curl https://raw.githubusercontent.com/neurogenomics/wdl-scflow/master/workflows/r/check_inputs.r > check_inputs.r;
      chmod +x *.r
-     echo ./check_inputs.r --samplesheet ~{input_file}  --manifest ~{manifest_file}
+     echo ./check_inputs.r --input ~{input_file}  --manifest ~{manifest_file}
      ./check_inputs.r --samplesheet ~{input_file}  --manifest ~{manifest_file}
      cat ~{manifest_file}  | awk '(NR>1)' | awk {' print $1 '}  > keys.txt
      
