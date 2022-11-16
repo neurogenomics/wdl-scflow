@@ -88,7 +88,8 @@ task scflow_qc {
      
      mat_path=`cat ~{manifest_file} | grep ~{qc_key} | awk {' print $2 '}`
      echo mat_path $mat_path
-
+     
+     mkdir mat_path
      strato sync --backend gcp -m "$mat_path" "mat_path"
      echo ls 
      ls
@@ -108,6 +109,7 @@ task scflow_qc {
 
 
      echo MATPATH $MATPATH
+     ls $MATPATH
 
 
      #wget mat_path
