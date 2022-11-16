@@ -47,21 +47,21 @@ manifest <- read.delim(args$manifest)
 
 # check manifest paths exist
 
-check_exists <- function(filepath) {
-  RCurl::url.exists(filepath) |
-  dir.exists(filepath) |
-  any(startsWith(filepath, c("gs://", "s3://")))
-}
+#check_exists <- function(filepath) {
+#  RCurl::url.exists(filepath) |
+#  dir.exists(filepath) |
+#  any(startsWith(filepath, c("gs://", "s3://")))
+}#
 
-dir_exists <- purrr::pmap_lgl(manifest, ~ check_exists(as.character(..2)))
+#dir_exists <- purrr::pmap_lgl(manifest, ~ check_exists(as.character(..2)))
 
-if (!all(dir_exists)) {
-  cat("The following paths were not found: -\n")
-  print(manifest[!dir_exists, ])
-  stop("Folder paths specified in the manifest were not found.")
-} else {
-  cat("✓ All paths specified in the manifest were found.\n")
-}
+#if (!all(dir_exists)) {
+# cat("The following paths were not found: -\n")
+#  print(manifest[!dir_exists, ])
+#  stop("Folder paths specified in the manifest were not found.")
+#} else {
+#  cat("✓ All paths specified in the manifest were found.\n")
+#}
 
 # check input samplesheet data present for all keys in manifest
 key_in_input <- purrr::map_lgl(
