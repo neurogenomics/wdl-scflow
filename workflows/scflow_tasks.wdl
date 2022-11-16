@@ -85,20 +85,17 @@ task scflow_qc {
      curl https://raw.githubusercontent.com/neurogenomics/wdl-scflow/master/workflows/r/scflow_qc.r  > scflow_qc.r;
      chmod +x *.r
 
-     mkdir -p mat_folder 
-     hi=sdf
+     
      mat_path=`cat ~{manifest_file} | grep ~{qc_key} | awk {' print $2 '}`
      echo mat_path $mat_path
 
      strato sync --backend gcp -m "$mat_path" "mat_path"
-     echo ls 
-     ls
 
      if [[ -d mat_path ]]; then
         echo "${mat_path} is a directory"
         MATPATH="${mat_path}"
     elif [[ -f mat_path ]]; then
-        echo "${mat_path} is a file"
+        echo "${mat_path} is a file, unzipping"
         mkdir mat_folder && unzip mat_path -d ./mat_folder
         MATPATH=mat_folder
     else
