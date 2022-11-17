@@ -113,7 +113,7 @@ task scflow_qc {
      #wget mat_path
      #unzip individual_1.zip -d ./mat_folder
 
-     echo ./scflow_qc.r --input ~{input_file} --mat_path ${MATPATH} --key ~{qc_key} --ensembl_mappings ~{ensembl_mappings} --key_colname ~{qc_key_colname} \
+     ./scflow_qc.r --input ~{input_file} --mat_path ${MATPATH} --key ~{qc_key} --ensembl_mappings ~{ensembl_mappings} --key_colname ~{qc_key_colname} \
     --factor_vars ~{qc_factor_vars} \
     --min_library_size ~{qc_min_library_size} \
     --max_library_size ~{qc_max_library_size} \
