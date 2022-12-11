@@ -200,10 +200,9 @@ workflow scflow {
 			species = species
 		}  
 
-		#output {
-		#File checked_manifest = "checked_manifest.txt"
-		#}
 	}
+
+call tasks.scflow_merge as scflow_merge {
 
 }
 
