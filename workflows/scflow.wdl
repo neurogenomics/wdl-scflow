@@ -202,7 +202,5 @@ workflow scflow {
 
 	}
 
-call tasks.scflow_merge as scflow_merge {
-
 }
 
