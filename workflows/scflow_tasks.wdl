@@ -145,12 +145,12 @@ task scflow_qc {
     --species ~{species} 
     
     for files in qc_plot_data qc_plot_data qc_plots qc_report qc_summary rinuv_scflow_qc_report.html Rplots.pdf; do
-         strato cp -r --backend gcp -m $files $mat_path/$files
-
+         strato cp -r --backend gcp -m $files $mat_path/$files; done 
+    
     >>>
 
      output {
-     # File count_depth = "qc_plot_data/~{qc_key} +"_count_depth_distribution.tsv"
+     File count_depth = "qc_plot_data/~{qc_key}_count_depth_distribution.tsv"
      File qc_summary = "qc_summary/~{qc_key}_qc_summary.tsv"
      }
 
