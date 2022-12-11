@@ -200,7 +200,7 @@ workflow scflow {
 			species = species
 		}  
 
-	}
+	
 
 }
 
