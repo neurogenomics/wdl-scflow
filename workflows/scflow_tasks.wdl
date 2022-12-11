@@ -150,8 +150,8 @@ task scflow_qc {
     >>>
 
      output {
-     File count_depth = "qc_plot_data/"+ qc_key +"_count_depth_distribution.tsv"
-     File qc_summary = qc_summary/${qc_key}_qc_summary.tsv
+     File count_depth = "qc_plot_data/~{qc_key}_count_depth_distribution.tsv"
+     File qc_summary = "qc_summary/~{qc_key}_qc_summary.tsv"
      }
 
      runtime {
