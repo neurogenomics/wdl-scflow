@@ -204,7 +204,7 @@ workflow scflow {
 
 	call tasks.merge_qc as merge_qc {
 		input: 
-		files=scflow_qc.qc_summary
-		}
+			qc_summaries = scflow_qc.qc_summary
+			}
 }
 
