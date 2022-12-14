@@ -13,10 +13,8 @@ task check_inputs {
      }
 
      command <<<
-     echo hihi
      curl https://raw.githubusercontent.com/neurogenomics/wdl-scflow/master/workflows/r/check_inputs.r > check_inputs.r;
-     chmod +x *.r
-     echo ./check_inputs.r --input ~{input_file}  --manifest ~{manifest_file}
+     chmod +x check_inputs.r
      ./check_inputs.r --input ~{input_file}  --manifest ~{manifest_file}
      cat ~{manifest_file}  | awk '(NR>1)' | awk {' print $1 '}  > keys.txt
      
@@ -105,11 +103,6 @@ task scflow_qc {
         exit 1
     fi
 
-
-     echo MATPATH $MATPATH
-     ls $MATPATH
-
-
      #wget mat_path
      #unzip individual_1.zip -d ./mat_folder
 
@@ -166,3 +159,29 @@ task scflow_qc {
 }
 
 
+task merge_qc {
+     input {
+     Array[File] qc_summaries
+     }
+
+     command <<<
+     curl https://raw.githubusercontent.com/neurogenomics/wdl-scflow/master/workflows/r/merge_tables.r > merge_tables.r;
+     chmod +x merge_tables.r
+     echo ~{sep="," qc_summaries}
+     ./merge_tables.r --input ~{sep="," qc_summaries}
+>>>
+
+     output {
+     File merged_tsv = "merged.tsv"
+     }
+
+     runtime {
+     docker: "eugeneduff/scflow-wdl:0.1"
+     memory: "12G"
+     bootDiskSizeGb: "12"
+     disks: "local-disk 100 HDD"
+     cpu: 1
+     preemptible: 1
+     maxRetries: 0
+     }
+}
