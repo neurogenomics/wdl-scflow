@@ -1,0 +1,5 @@
+key	filepath
+rinuv	/home/eduff/pkgs/wdl-scflow/workflows/data/individual_1.zip
+finov	/home/eduff/pkgs/wdl-scflow/workflows/data/individual_2.zip
+jafap	/home/eduff/pkgs/wdl-scflow/workflows/data/individual_3.zip
+rigap	/home/eduff/pkgs/wdl-scflow/workflows/data/individual_4.zip

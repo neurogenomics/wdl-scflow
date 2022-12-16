@@ -1,11 +1,9 @@
 {
     "scflow.input_file": "/home/eduff/pkgs/wdl-scflow/workflows/data/SampleSheet.tsv",
     "scflow.manifest_file": "/home/eduff/pkgs/wdl-scflow/workflows/data/Manifest.txt",
-    "scflow.mat_path": "/home/eduff/pkgs/wdl-scflow/workflows/data/",
     "scflow.ensembl_mappings": "/home/eduff/pkgs/wdl-scflow/workflows/data/ensembl_mappings.tsv",
     "scflow.ctd_path": "/home/eduff/pkgs/wdl-scflow/workflows/data/ctd_v1.zip",
     "scflow.qc_key_colname":"manifest",
-    "scflow.qc_key":"rinuv",
     "scflow.qc_factor_vars":"individual",
     "scflow.qc_min_library_size":100,
     "scflow.qc_max_library_size":"adaptive",

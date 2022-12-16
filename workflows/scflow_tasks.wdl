@@ -15,6 +15,7 @@ task check_inputs {
      command <<<
      curl https://raw.githubusercontent.com/neurogenomics/wdl-scflow/master/workflows/r/check_inputs.r > check_inputs.r;
      chmod +x check_inputs.r
+     ls -ld /testing
      ./check_inputs.r --input ~{input_file}  --manifest ~{manifest_file}
      cat ~{manifest_file}  | awk '(NR>1)' | awk {' print $1 '}  > keys.txt
      
@@ -81,27 +82,29 @@ task scflow_qc {
 
      command <<<
      curl https://raw.githubusercontent.com/neurogenomics/wdl-scflow/master/workflows/r/scflow_qc.r  > scflow_qc.r;
-     chmod +x *.r
-
+     chmod +x scflow_qc.r
      
      mat_path=`cat ~{manifest_file} | grep ~{qc_key} | awk {' print $2 '}`
+     echo trying to copy
      echo mat_path $mat_path
-     
-     mkdir mat_path
-     strato sync --backend gcp -m "$mat_path" "mat_path"
 
-     if [[ -d mat_path ]]; then
-        echo "${mat_path} is a directory"
-        MATPATH=mat_path
-    elif [[ -f mat_path ]]; then
-        echo "${mat_path} is a file, unzipping"
-        mkdir mat_folder && unzip mat_path -d ./mat_folder
-        MATPATH=mat_folder
-    else
-        echo "${mat_path} is not valid"
-        MATPATH="${mat_path}"
-        exit 1
-    fi
+     if [[ "$mat_path" == *"zip" ]]; then
+          strato cp --backend local -m "$mat_path" "mat_path.zip"
+          unzip mat_path.zip -d ./mat_path 
+     else
+          mkdir mat_path
+          strato sync --backend gcp -m "$mat_path" "mat_path"
+     fi
+
+     MATPATH=mat_path
+
+     #if [[ -d mat_path ]]; then
+     #   echo "${mat_path} is a directory"
+     #   MATPATH=mat_path
+     #else
+     #   echo "${mat_path} is not valid"
+     #   MATPATH="${mat_path}"
+     #   exit 1
 
      #wget mat_path
      #unzip individual_1.zip -d ./mat_folder
@@ -168,7 +171,7 @@ task merge_qc {
      curl https://raw.githubusercontent.com/neurogenomics/wdl-scflow/master/workflows/r/merge_tables.r > merge_tables.r;
      chmod +x merge_tables.r
      echo ~{sep="," qc_summaries}
-     ./merge_tables.r --input ~{sep="," qc_summaries}
+     ./merge_tables.r --filepaths ~{sep="," qc_summaries}
 >>>
 
      output {
