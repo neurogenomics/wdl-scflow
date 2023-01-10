@@ -1,3 +1,5 @@
 key	filepath
 rinuv	/data/individual_1.zip
 finov	/data/individual_2.zip
+jafap	/data/individual_3.zip
+rigap	/data/individual_4.zip
