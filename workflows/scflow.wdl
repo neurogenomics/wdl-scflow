@@ -15,6 +15,8 @@ struct BaseParams {
 
 workflow scflow {
 	input { 
+        # Backend
+        String backend
 		File input_file 
 		File manifest_file 
 		File ensembl_mappings
@@ -72,7 +74,7 @@ workflow scflow {
 		Array[String]     integ_categorical_covariates
 		String     integ_input_reduced_dim
 		Array[String]     merge_plot_vars
-		String     merge_facet_vars
+		Array[String]     merge_facet_vars
 		Array[String]     merge_outlier_vars
 		Array[String]     reddim_input_reduced_dim
 		Array[String]     reddim_reduction_methods
@@ -161,6 +163,7 @@ workflow scflow {
 
 		call tasks.scflow_qc as scflow_qc {
 			input:	
+            backend = backend,
 			input_file = input_file,
 			manifest_file = manifest_file,
 			ensembl_mappings = ensembl_mappings,
@@ -206,5 +209,23 @@ workflow scflow {
 		input: 
 			qc_summaries = scflow_qc.qc_summary
 			}
+		
+	call tasks.merge_sce as merge_sce {
+		input:
+		    merged_tsv = merge_qc.merged_tsv,
+			sce_dirs = scflow_qc.outputpath,
+			ensembl_mappings = ensembl_mappings,    
+      		backend = backend,
+     		qc_key_colname = qc_key_colname, 
+     		plot_vars = merge_plot_vars ,
+      		facet_vars = merge_facet_vars, 
+     		outlier_vars = merge_outlier_vars, 
+     		species =  species 
+	}
+	#call tasks.scflow_integrate {
+    #    merged_sce.merged_sce
+	#}
+
+   
 }
 

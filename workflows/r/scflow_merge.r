@@ -97,7 +97,7 @@ args <- purrr::map(args, function(x) {
 ##  Start Merge                                                             ####
 
 print(sprintf(
-  "Reading %sx SingleCellExperiment's",
+  "Reading %sx SinglexxxxCellExperiment's",
   length(args$sce_paths))
 )
 

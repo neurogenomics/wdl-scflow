@@ -1,4 +1,5 @@
 {
+    "scflow.backend":"local",
     "scflow.input_file": "/home/eduff/pkgs/wdl-scflow/workflows/data/SampleSheet.tsv",
     "scflow.manifest_file": "/home/eduff/pkgs/wdl-scflow/workflows/data/Manifest.txt",
     "scflow.ensembl_mappings": "/home/eduff/pkgs/wdl-scflow/workflows/data/ensembl_mappings.tsv",
@@ -56,7 +57,7 @@
     "scflow.integ_categorical_covariates":["manifest","diagnosis","sex"],
     "scflow.integ_input_reduced_dim":"UMAP",
     "scflow.merge_plot_vars":["total_features_by_counts","total_counts","pc_mito","pc_ribo"],
-    "scflow.merge_facet_vars":"null",
+    "scflow.merge_facet_vars":["null"],
     "scflow.merge_outlier_vars":["total_features_by_counts","total_counts"],
     "scflow.reddim_input_reduced_dim":["PCA","Liger"],
     "scflow.reddim_reduction_methods":["tSNE","UMAP","UMAP3D"],
