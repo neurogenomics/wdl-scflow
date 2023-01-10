@@ -41,6 +41,7 @@ task check_inputs {
 
 task scflow_qc {
      input {
+     String backend
      File input_file
      File ensembl_mappings
      File manifest_file
@@ -85,18 +86,22 @@ task scflow_qc {
      chmod +x scflow_qc.r
      
      mat_path=`cat ~{manifest_file} | grep ~{qc_key} | awk {' print $2 '}`
-     echo trying to copy
-     echo mat_path $mat_path
 
      if [[ "$mat_path" == *"zip" ]]; then
-          strato cp --backend local -m "$mat_path" "mat_path.zip"
-          unzip mat_path.zip -d ./mat_path 
+          MATPATH=mat_folder_"${qc_key}"
+          strato cp --backend ~{backend} -m "$mat_path" $MATPATH
+          unzip $MATPATH/*zip -d $MATPATH
+          # removing the assumed .zip extension
+          OUTPUTPATH=${mat_path%.zip} 
+          
      else
           mkdir mat_path
-          strato sync --backend gcp -m "$mat_path" "mat_path"
-     fi
+          strato sync --backend ~{backend} -m "$mat_path" "mat_path"
+          MATPATH=mat_path
 
-     MATPATH=mat_path
+          OUTPUTPATH=$mat_path
+     fi
+     echo $OUTPUTPATH > outputpath.txt
 
      #if [[ -d mat_path ]]; then
      #   echo "${mat_path} is a directory"
@@ -140,14 +145,15 @@ task scflow_qc {
     --expect_cells ~{amb_expect_cells} \
     --species ~{species} 
     
-    for files in qc_plot_data qc_plot_data qc_plots qc_report qc_summary rinuv_scflow_qc_report.html Rplots.pdf; do
-         strato cp -r --backend gcp -m $files $mat_path/$files; done 
+    for files in qc_plot_data qc_plots qc_report qc_summary ${qc_key}_scflow_qc_report.html Rplots.pdf; do
+         strato cp -r --backend ~{backend} -m $files $OUTPUTPATH/$files; done 
     
     >>>
 
      output {
      File count_depth = "qc_plot_data/~{qc_key}_count_depth_distribution.tsv"
      File qc_summary = "qc_summary/~{qc_key}_qc_summary.tsv"
+     String outputpath = read_string("outputpath.txt")
      }
 
      runtime {
@@ -170,12 +176,79 @@ task merge_qc {
      command <<<
      curl https://raw.githubusercontent.com/neurogenomics/wdl-scflow/master/workflows/r/merge_tables.r > merge_tables.r;
      chmod +x merge_tables.r
-     echo ~{sep="," qc_summaries}
      ./merge_tables.r --filepaths ~{sep="," qc_summaries}
 >>>
 
      output {
      File merged_tsv = "merged.tsv"
+     }
+
+     runtime {
+     docker: "eugeneduff/scflow-wdl:0.1"
+     memory: "12G"
+     bootDiskSizeGb: "12"
+     disks: "local-disk 100 HDD"
+     cpu: 1
+     preemptible: 1
+     maxRetries: 0
+     }
+}
+
+task merge_sce {
+     input {
+     File merged_tsv
+     Array[String] sce_dirs 
+     File ensembl_mappings 
+     String backend
+     String qc_key_colname 
+     Array[String] plot_vars 
+     Array[String] facet_vars 
+     Array[String] outlier_vars 
+     String species 
+     }
+
+     command <<<
+     curl https://raw.githubusercontent.com/neurogenomics/wdl-scflow/master/workflows/r/scflow_merge.r > scflow_merge.r;
+     chmod +x scflow_merge.r
+
+     FILEPATHS=''
+     for INPUTDIR in ~{sep=" " sce_dirs}; do 
+          OUTPUTDIR=`dirname $INPUTDIR`
+          TARGETDIR=`basename $INPUTDIR`
+          strato cp -r --backend ~{backend} -m ${INPUTDIR} .
+          FILEDIRS=${FILEDIRS}${TARGETDIR},
+          ls ${TARGETDIR}
+          #if [[ -z $FILEPATHS ]] ;
+          #     then FILEPATHS=${OUTPUTPATH}
+          #     else FILEPATHS=${FILEPATHS},$OUTPUTPATH
+          #fi
+     done
+     
+     # remove final character
+     FILEDIRS=${FILEDIRS:0:-1}
+
+     echo ./scflow_merge.r $options --sce_paths $FILEDIRS \
+     --ensembl_mappings ~{ensembl_mappings} \
+     --unique_id_var ~{qc_key_colname} \
+     --plot_vars ~{sep="," plot_vars} \
+     --facet_vars ~{sep="," facet_vars} \
+     --outlier_vars ~{sep="," outlier_vars} \
+     --species ~{species}
+     ls $TARGETDIR
+     ./scflow_merge.r $options --sce_paths $FILEDIRS --ensembl_mappings ~{ensembl_mappings} \
+     --unique_id_var ~{qc_key_colname} \
+     --plot_vars ~{sep="," plot_vars} \
+     --facet_vars ~{sep="," facet_vars} \
+     --outlier_vars ~{sep="," outlier_vars} \
+     --species ~{species}
+     
+
+     for files in merged_sce merge_plots merge_summary_plots merged_report; do
+          strato cp -r --backend ~{backend} -m $files $OUTPUTDIR/$files; done 
+    
+>>>
+
+     output {
      }
 
      runtime {
