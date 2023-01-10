@@ -101,7 +101,7 @@ task scflow_qc {
 
           OUTPUTPATH=$mat_path
      fi
-     echo $OUTPUTPATH > outputpath.txt
+     echo $OUTPUTPATH/~{qc_key}_sce > outputpath.txt
 
      #if [[ -d mat_path ]]; then
      #   echo "${mat_path} is a directory"
@@ -145,8 +145,8 @@ task scflow_qc {
     --expect_cells ~{amb_expect_cells} \
     --species ~{species} 
     
-    for files in qc_plot_data qc_plots qc_report qc_summary ${qc_key}_scflow_qc_report.html Rplots.pdf; do
-         strato cp -r --backend ~{backend} -m $files $OUTPUTPATH/$files; done 
+    for files in qc_plot_data qc_plots qc_report qc_summary ~{qc_key}_scflow_qc_report.html Rplots.pdf ~{qc_key}_sce; do
+         strato sync --backend ~{backend} -m $files $OUTPUTPATH/$files; done 
     
     >>>
 
@@ -157,7 +157,7 @@ task scflow_qc {
      }
 
      runtime {
-     docker: "eugeneduff/scflow-wdl:0.1"
+     docker: "eugeneduff/scflow-wdl:0.11"
      memory: "120G"
      bootDiskSizeGb: "16"
      disks: "local-disk 100 HDD"
@@ -184,7 +184,7 @@ task merge_qc {
      }
 
      runtime {
-     docker: "eugeneduff/scflow-wdl:0.1"
+     docker: "eugeneduff/scflow-wdl:0.11"
      memory: "12G"
      bootDiskSizeGb: "12"
      disks: "local-disk 100 HDD"
@@ -213,7 +213,6 @@ task merge_sce {
 
      FILEPATHS=''
      for INPUTDIR in ~{sep=" " sce_dirs}; do 
-          OUTPUTDIR=`dirname $INPUTDIR`
           TARGETDIR=`basename $INPUTDIR`
           strato cp -r --backend ~{backend} -m ${INPUTDIR} .
           FILEDIRS=${FILEDIRS}${TARGETDIR},
@@ -226,15 +225,10 @@ task merge_sce {
      
      # remove final character
      FILEDIRS=${FILEDIRS:0:-1}
+     # generate group outputdir (two dirs back should be variable)
+     OUTPUTDIR=`dirname $INPUTDIR`
+     OUTPUTDIR=`dirname $OUTPUTDIR`
 
-     echo ./scflow_merge.r $options --sce_paths $FILEDIRS \
-     --ensembl_mappings ~{ensembl_mappings} \
-     --unique_id_var ~{qc_key_colname} \
-     --plot_vars ~{sep="," plot_vars} \
-     --facet_vars ~{sep="," facet_vars} \
-     --outlier_vars ~{sep="," outlier_vars} \
-     --species ~{species}
-     ls $TARGETDIR
      ./scflow_merge.r $options --sce_paths $FILEDIRS --ensembl_mappings ~{ensembl_mappings} \
      --unique_id_var ~{qc_key_colname} \
      --plot_vars ~{sep="," plot_vars} \
@@ -242,9 +236,8 @@ task merge_sce {
      --outlier_vars ~{sep="," outlier_vars} \
      --species ~{species}
      
-
      for files in merged_sce merge_plots merge_summary_plots merged_report; do
-          strato cp -r --backend ~{backend} -m $files $OUTPUTDIR/$files; done 
+          strato sync --backend ~{backend} -m $files $OUTPUTDIR/$files; done 
     
 >>>
 
@@ -252,7 +245,7 @@ task merge_sce {
      }
 
      runtime {
-     docker: "eugeneduff/scflow-wdl:0.1"
+     docker: "eugeneduff/scflow-wdl:0.11"
      memory: "12G"
      bootDiskSizeGb: "12"
      disks: "local-disk 100 HDD"
