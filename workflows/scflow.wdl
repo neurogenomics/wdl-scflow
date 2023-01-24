@@ -21,6 +21,7 @@ workflow scflow {
 		File manifest_file 
 		File ensembl_mappings
 		File ctd_path
+		String celltype_mappings
 		String     qc_key_colname
 		String     qc_factor_vars
 		Int qc_min_library_size
@@ -222,10 +223,186 @@ workflow scflow {
      		outlier_vars = merge_outlier_vars, 
      		species =  species 
 	}
-	#call tasks.scflow_integrate {
-    #    merged_sce.merged_sce
-	#}
 
-   
+	call tasks.scflow_integrate as scflow_integrate{
+		input:
+		merged_sce = merge_sce.merged_sce,
+		method = integ_method,
+		k = integ_k ,
+		backend = backend,
+		unique_id_var = integ_unique_id_var ,
+		take_gene_union = integ_take_gene_union ,
+		remove_missing = integ_remove_missing ,
+		num_genes = integ_num_genes ,
+		combine = integ_combine ,
+		capitalize = integ_capitalize ,
+		use_cols = integ_use_cols ,
+		lambda = integ_lambda ,
+		thresh = integ_thresh ,
+		max_iters = integ_max_iters ,
+		nrep = integ_nrep ,
+		rand_seed = integ_rand_seed ,
+		quantiles = integ_quantiles ,
+		ref_dataset = integ_ref_dataset ,
+		min_cells = integ_min_cells ,
+		knn_k = integ_knn_k ,
+		center = integ_center ,
+		resolution = integ_resolution
+	}
+
+	call tasks.scflow_reduce_dims as scflow_reduce_dims{
+		input:
+	integrated_sce = scflow_integrate.integrated_sce,
+	reddim_input_reduced_dim = reddim_input_reduced_dim ,
+    reddim_reduction_methods = reddim_reduction_methods ,
+    reddim_vars_to_regress_out = reddim_vars_to_regress_out ,
+    reddim_umap_pca_dims = reddim_umap_pca_dims ,
+    reddim_umap_n_neighbors = reddim_umap_n_neighbors ,
+    reddim_umap_n_components = reddim_umap_n_components ,
+    reddim_umap_init = reddim_umap_init ,
+    reddim_umap_metric = reddim_umap_metric ,
+    reddim_umap_n_epochs = reddim_umap_n_epochs ,
+    reddim_umap_learning_rate = reddim_umap_learning_rate ,
+    reddim_umap_min_dist = reddim_umap_min_dist ,
+    reddim_umap_spread = reddim_umap_spread ,
+    reddim_umap_set_op_mix_ratio = reddim_umap_set_op_mix_ratio ,
+    reddim_umap_local_connectivity = reddim_umap_local_connectivity ,
+    reddim_umap_repulsion_strength = reddim_umap_repulsion_strength ,
+    reddim_umap_negative_sample_rate = reddim_umap_negative_sample_rate ,
+    reddim_umap_fast_sgd = reddim_umap_fast_sgd ,
+    reddim_tsne_dims = reddim_tsne_dims ,
+    reddim_tsne_initial_dims = reddim_tsne_initial_dims ,
+    reddim_tsne_perplexity = reddim_tsne_perplexity ,
+    reddim_tsne_theta = reddim_tsne_theta ,
+    reddim_tsne_stop_lying_iter = reddim_tsne_stop_lying_iter ,
+    reddim_tsne_mom_switch_iter = reddim_tsne_mom_switch_iter ,
+    reddim_tsne_max_iter = reddim_tsne_max_iter ,
+    reddim_tsne_pca_center = reddim_tsne_pca_center ,
+    reddim_tsne_pca_scale = reddim_tsne_pca_scale ,
+    reddim_tsne_normalize = reddim_tsne_normalize ,
+    reddim_tsne_momentum = reddim_tsne_momentum ,
+    reddim_tsne_final_momentum = reddim_tsne_final_momentum ,
+    reddim_tsne_eta = reddim_tsne_eta ,
+    reddim_tsne_exaggeration_factor = reddim_tsne_exaggeration_factor,
+	backend = backend
 }
 
+	call tasks.scflow_cluster as scflow_cluster{
+		input:
+		sce_path = scflow_reduce_dims.reddim_sce,
+		clust_cluster_method = clust_cluster_method ,
+		clust_reduction_method = clust_reduction_method ,
+		clust_res = clust_res ,
+		clust_k = clust_k ,
+		clust_louvain_iter = clust_louvain_iter,
+		backend = backend
+}
+
+call tasks.scflow_report_integrated as scflow_report_integrated{
+		input:
+		sce_path = scflow_cluster.clustered_sce,
+		integ_categorical_covariates = integ_categorical_covariates ,
+		integ_input_reduced_dim = integ_input_reduced_dim ,
+		reddimplot_pointsize = reddimplot_pointsize ,
+		reddimplot_alpha = reddimplot_alpha, 
+		backend = backend
+}
+
+
+call tasks.scflow_map_celltypes as scflow_map_celltypes{
+		input:
+		sce_path = scflow_cluster.clustered_sce,
+		ctd_path = ctd_path,
+		cta_clusters_colname = cta_clusters_colname ,
+		cta_cells_to_sample = cta_cells_to_sample ,
+		species = species ,
+		reddimplot_pointsize = reddimplot_pointsize ,
+		reddimplot_alpha = reddimplot_alpha,
+		backend = backend
+}
+
+
+call tasks.scflow_finalize_sce as scflow_finalize_sce{
+		input:
+		sce_path = '/data/celltype_mapped_sce',
+		celltype_mappings = celltype_mappings,
+		cta_clusters_colname = cta_clusters_colname ,
+		cta_celltype_var = cta_celltype_var ,
+		cta_unique_id_var = cta_unique_id_var ,
+		cta_facet_vars = cta_facet_vars ,
+		clust_reduction_method = clust_reduction_method ,
+		cta_metric_vars = cta_metric_vars ,
+		cta_top_n = cta_top_n ,
+		reddimplot_pointsize = reddimplot_pointsize ,
+		reddimplot_alpha = reddimplot_alpha ,
+		max_cores = max_cores,
+		backend = backend
+}
+
+scatter ( celltype in scflow_finalize_sce.celltypes ) {
+
+	call tasks.scflow_dge as scflow_dge{
+			input:
+			sce_path = scflow_finalize_sce.final_sce,
+			dge_de_method = dge_de_method,
+			ensembl_mappings = ensembl_mappings,
+			celltype = celltype,
+			celltypes_n_cells = scflow_finalize_sce.celltypes_n_cells,
+			dge_mast_method = dge_mast_method ,
+			dge_min_counts = dge_min_counts ,
+			dge_min_cells_pc = dge_min_cells_pc ,
+			dge_rescale_numerics = dge_rescale_numerics ,
+			dge_force_run = dge_force_run ,
+			dge_pseudobulk = dge_pseudobulk ,
+			dge_celltype_var = dge_celltype_var ,
+			dge_sample_var = dge_sample_var ,
+			dge_dependent_var = dge_dependent_var ,
+			dge_ref_class = dge_ref_class ,
+			dge_confounding_vars = dge_confounding_vars ,
+			dge_random_effects_var = dge_random_effects_var ,
+			dge_pval_cutoff = dge_pval_cutoff ,
+			dge_fc_threshold = dge_fc_threshold ,
+			species = species ,
+			max_cores = dge_max_cores,
+			backend = backend
+	}
+}
+
+scatter ( de_table in  scflow_dge.de_table ) {
+call tasks.scflow_ipa as scflow_ipa{
+		input:
+		de_table = de_table,
+		ipa_enrichment_tool = ipa_enrichment_tool ,
+		ipa_enrichment_method = ipa_enrichment_method ,
+		ipa_enrichment_database = ipa_enrichment_database ,
+		dge_pval_cutoff = dge_pval_cutoff ,
+		dge_fc_threshold = dge_fc_threshold ,
+		species = species,
+		backend = backend
+}
+}
+
+call tasks.scflow_dirichlet as scflow_dirichlet{
+		input:
+	sce_path = scflow_finalize_sce.final_sce,	
+    dirich_unique_id_var = dirich_unique_id_var ,
+    dirich_celltype_var = dirich_celltype_var ,
+    dirich_dependent_var = dirich_dependent_var ,
+    dirich_ref_class = dirich_ref_class ,
+    dirich_var_order = dirich_var_order,
+	backend = backend
+}
+
+call tasks.scflow_plot_reddim_genes as scflow_plot_reddim_genes{
+		input:
+	sce_path = scflow_finalize_sce.final_sce,	
+	plotreddim_reduction_methods = plotreddim_reduction_methods ,
+    reddimplot_pointsize = reddimplot_pointsize ,
+    reddimplot_alpha = reddimplot_alpha ,
+	reddim_genes_yml = reddim_genes_yml,
+	backend = backend
+}
+
+
+
+}
