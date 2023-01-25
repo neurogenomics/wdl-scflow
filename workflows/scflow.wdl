@@ -149,6 +149,7 @@ workflow scflow {
 		String     plotreddim_reduction_methods
 		Float     reddimplot_pointsize
 		Float     reddimplot_alpha
+		String 	  reddim_genes_yml
 		String     species
 		Int    max_cores
 	}
@@ -164,7 +165,7 @@ workflow scflow {
 
 		call tasks.scflow_qc as scflow_qc {
 			input:	
-            backend = backend,
+            		backend = backend,
 			input_file = input_file,
 			manifest_file = manifest_file,
 			ensembl_mappings = ensembl_mappings,
@@ -284,7 +285,7 @@ workflow scflow {
     reddim_tsne_final_momentum = reddim_tsne_final_momentum ,
     reddim_tsne_eta = reddim_tsne_eta ,
     reddim_tsne_exaggeration_factor = reddim_tsne_exaggeration_factor,
-	backend = backend
+    backend = backend
 }
 
 	call tasks.scflow_cluster as scflow_cluster{
@@ -324,7 +325,7 @@ call tasks.scflow_map_celltypes as scflow_map_celltypes{
 
 call tasks.scflow_finalize_sce as scflow_finalize_sce{
 		input:
-		sce_path = '/data/celltype_mapped_sce',
+		sce_path = scflow_map_celltypes.celltype_mapped_sce,
 		celltype_mappings = celltype_mappings,
 		cta_clusters_colname = cta_clusters_colname ,
 		cta_celltype_var = cta_celltype_var ,
