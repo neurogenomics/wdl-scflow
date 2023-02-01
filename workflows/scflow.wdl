@@ -294,7 +294,7 @@ workflow scflow {
 		clust_cluster_method = clust_cluster_method ,
 		clust_reduction_method = clust_reduction_method ,
 		clust_res = clust_res ,
-		clust_k = clust_k ,
+		clust_k = clust_k,
 		clust_louvain_iter = clust_louvain_iter,
 		backend = backend
 }

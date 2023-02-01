@@ -287,7 +287,7 @@ task scflow_integrate {
      chmod +x scflow_integrate.r
 
      
-     strato cp -r --backend ~{backend} -m ~{merged_sce} merged_sce .
+     strato cp -r --backend ~{backend} -m ~{merged_sce} .
      INPUTDIR=`basename ~{merged_sce} `
 
      ./scflow_integrate.r --sce_path $INPUTDIR \
@@ -734,7 +734,7 @@ task scflow_dge {
      strato cp -r --backend ~{backend} -m ~{sce_path} .
      INPUTDIR=`basename ~{sce_path} `
 
-     cat celltypes.tsv | grep Micro | awk '{ print "celltype: " $1 " n_cells:" $2 }' 
+     cat ~{celltypes_n_cells} | grep Micro | awk '{ print "celltype: " $1 " n_cells:" $2 }' 
 
      ./scflow_dge.r  --sce $INPUTDIR --celltype ~{celltype}  \
      --de_method ~{dge_de_method} \
