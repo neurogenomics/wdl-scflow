@@ -682,7 +682,7 @@ task scflow_finalize_sce {
      runtime {
      docker: "eugeneduff/scflow-wdl:0.11"
      memory: "12G"
-     bootDiskSizeGb: "12"
+     bootDiskSizeGb: "24"
      disks: "local-disk 100 HDD"
      cpu: 1
      preemptible: 1
@@ -777,10 +777,10 @@ task scflow_dge {
      runtime {
      docker: "eugeneduff/scflow-wdl:0.11"
      memory: "12G"
-     bootDiskSizeGb: "12"
+     bootDiskSizeGb: "24"
      disks: "local-disk 100 HDD"
-     cpu: 1
-     preemptible: 1
+     cpu: 5
+     preemptible: 0
      maxRetries: 0
      }
 
