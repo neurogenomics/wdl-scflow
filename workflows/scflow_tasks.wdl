@@ -776,12 +776,12 @@ task scflow_dge {
 
      runtime {
      docker: "eugeneduff/scflow-wdl:0.11"
-     memory: "12G"
-     bootDiskSizeGb: "24"
+     memory: "36G"
+     bootDiskSizeGb: "36"
      disks: "local-disk 100 HDD"
-     cpu: 5
-     preemptible: 0
-     maxRetries: 0
+     cpu: 20
+     preemptible: 1
+     maxRetries: 5
      }
 
 }
