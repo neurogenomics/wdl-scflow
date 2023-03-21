@@ -28,7 +28,7 @@ task check_inputs {
      }
 
      runtime {
-     docker: "eugeneduff/scflow-wdl:0.1"
+     docker: "nfancy/scflow"
      memory: "12G"
      bootDiskSizeGb: "12"
      disks: "local-disk 100 HDD"
@@ -157,7 +157,7 @@ task scflow_qc {
      }
 
      runtime {
-     docker: "nfancy/scflow/general"
+     docker: "nfancy/scflow"
      memory: "120G"
      bootDiskSizeGb: "16"
      disks: "local-disk 100 HDD"
@@ -185,7 +185,7 @@ task merge_qc {
 
      runtime {
      # docker: "eugeneduff/scflow-wdl:0.1x1"
-     docker: "nfancy/scflow/general"
+     docker: "nfancy/scflow"
      memory: "12G"
      bootDiskSizeGb: "12"
      disks: "local-disk 100 HDD"
@@ -247,7 +247,7 @@ task merge_sce {
      String merged_sce = read_string("outputpath.txt")    }
 
      runtime {
-     docker: "nfancy/scflow/general"
+     docker: "nfancy/scflow"
      memory: "12G"
      bootDiskSizeGb: "12"
      disks: "local-disk 100 HDD"
@@ -324,7 +324,7 @@ task scflow_integrate {
      }
 
      runtime {
-     docker: "nfancy/scflow/general"
+     docker: "nfancy/scflow"
      memory: "12G"
      bootDiskSizeGb: "12"
      disks: "local-disk 100 HDD"
@@ -434,7 +434,7 @@ task scflow_reduce_dims {
      }
 
      runtime {
-     docker: "nfancy/scflow/general"
+     docker: "nfancy/scflow"
      memory: "12G"
      bootDiskSizeGb: "12"
      disks: "local-disk 100 HDD"
@@ -490,7 +490,7 @@ task scflow_cluster {
      }
 
      runtime {
-     docker: "nfancy/scflow/general"
+     docker: "nfancy/scflow"
      memory: "12G"
      bootDiskSizeGb: "12"
      disks: "local-disk 100 HDD"
@@ -545,7 +545,7 @@ task scflow_report_integrated {
      }
 
      runtime {
-     docker: "nfancy/scflow/general"
+     docker: "nfancy/scflow"
      memory: "12G"
      bootDiskSizeGb: "12"
      disks: "local-disk 100 HDD"
@@ -604,7 +604,7 @@ task scflow_map_celltypes {
      }
 
      runtime {
-     docker: "nfancy/scflow/general"
+     docker: "nfancy/scflow"
      memory: "12G"
      bootDiskSizeGb: "12"
      disks: "local-disk 100 HDD"
@@ -681,7 +681,7 @@ task scflow_finalize_sce {
      }
 
      runtime {
-     docker: "nfancy/scflow/general"
+     docker: "nfancy/scflow"
      memory: "12G"
      bootDiskSizeGb: "24"
      disks: "local-disk 100 HDD"
@@ -776,7 +776,7 @@ task scflow_dge {
      }
 
      runtime {
-     docker: "nfancy/scflow/general"
+     docker: "nfancy/scflow"
      memory: "36G"
      bootDiskSizeGb: "36"
      disks: "local-disk 100 HDD"
@@ -839,7 +839,7 @@ task scflow_ipa {
      }
 
      runtime {
-     docker: "nfancy/scflow/general"
+     docker: "nfancy/scflow"
      memory: "12G"
      bootDiskSizeGb: "12"
      disks: "local-disk 100 HDD"
@@ -897,7 +897,7 @@ task scflow_dirichlet {
      }
 
      runtime {
-     docker: "nfancy/scflow/general"
+     docker: "nfancy/scflow"
      memory: "12G"
      bootDiskSizeGb: "12"
      disks: "local-disk 100 HDD"
@@ -951,7 +951,7 @@ task scflow_plot_reddim_genes {
      }
 
      runtime {
-     docker: "nfancy/scflow/general"
+     docker: "nfancy/scflow"
      memory: "12G"
      bootDiskSizeGb: "12"
      disks: "local-disk 100 HDD"
