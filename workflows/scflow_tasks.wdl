@@ -157,7 +157,7 @@ task scflow_qc {
      }
 
      runtime {
-     docker: "eugeneduff/scflow-wdl:0.11"
+     docker: "nfancy/scflow/general"
      memory: "120G"
      bootDiskSizeGb: "16"
      disks: "local-disk 100 HDD"
@@ -184,7 +184,8 @@ task merge_qc {
      }
 
      runtime {
-     docker: "eugeneduff/scflow-wdl:0.11"
+     # docker: "eugeneduff/scflow-wdl:0.1x1"
+     docker: "nfancy/scflow/general"
      memory: "12G"
      bootDiskSizeGb: "12"
      disks: "local-disk 100 HDD"
@@ -246,7 +247,7 @@ task merge_sce {
      String merged_sce = read_string("outputpath.txt")    }
 
      runtime {
-     docker: "eugeneduff/scflow-wdl:0.11"
+     docker: "nfancy/scflow/general"
      memory: "12G"
      bootDiskSizeGb: "12"
      disks: "local-disk 100 HDD"
@@ -323,7 +324,7 @@ task scflow_integrate {
      }
 
      runtime {
-     docker: "eugeneduff/scflow-wdl:0.11"
+     docker: "nfancy/scflow/general"
      memory: "12G"
      bootDiskSizeGb: "12"
      disks: "local-disk 100 HDD"
@@ -433,7 +434,7 @@ task scflow_reduce_dims {
      }
 
      runtime {
-     docker: "eugeneduff/scflow-wdl:0.11"
+     docker: "nfancy/scflow/general"
      memory: "12G"
      bootDiskSizeGb: "12"
      disks: "local-disk 100 HDD"
@@ -489,7 +490,7 @@ task scflow_cluster {
      }
 
      runtime {
-     docker: "eugeneduff/scflow-wdl:0.11"
+     docker: "nfancy/scflow/general"
      memory: "12G"
      bootDiskSizeGb: "12"
      disks: "local-disk 100 HDD"
@@ -544,7 +545,7 @@ task scflow_report_integrated {
      }
 
      runtime {
-     docker: "eugeneduff/scflow-wdl:0.11"
+     docker: "nfancy/scflow/general"
      memory: "12G"
      bootDiskSizeGb: "12"
      disks: "local-disk 100 HDD"
@@ -603,7 +604,7 @@ task scflow_map_celltypes {
      }
 
      runtime {
-     docker: "eugeneduff/scflow-wdl:0.11"
+     docker: "nfancy/scflow/general"
      memory: "12G"
      bootDiskSizeGb: "12"
      disks: "local-disk 100 HDD"
@@ -680,7 +681,7 @@ task scflow_finalize_sce {
      }
 
      runtime {
-     docker: "eugeneduff/scflow-wdl:0.11"
+     docker: "nfancy/scflow/general"
      memory: "12G"
      bootDiskSizeGb: "24"
      disks: "local-disk 100 HDD"
@@ -775,7 +776,7 @@ task scflow_dge {
      }
 
      runtime {
-     docker: "eugeneduff/scflow-wdl:0.11"
+     docker: "nfancy/scflow/general"
      memory: "36G"
      bootDiskSizeGb: "36"
      disks: "local-disk 100 HDD"
@@ -838,7 +839,7 @@ task scflow_ipa {
      }
 
      runtime {
-     docker: "eugeneduff/scflow-wdl:0.11"
+     docker: "nfancy/scflow/general"
      memory: "12G"
      bootDiskSizeGb: "12"
      disks: "local-disk 100 HDD"
@@ -896,7 +897,7 @@ task scflow_dirichlet {
      }
 
      runtime {
-     docker: "eugeneduff/scflow-wdl:0.11"
+     docker: "nfancy/scflow/general"
      memory: "12G"
      bootDiskSizeGb: "12"
      disks: "local-disk 100 HDD"
@@ -950,7 +951,7 @@ task scflow_plot_reddim_genes {
      }
 
      runtime {
-     docker: "eugeneduff/scflow-wdl:0.11"
+     docker: "nfancy/scflow/general"
      memory: "12G"
      bootDiskSizeGb: "12"
      disks: "local-disk 100 HDD"
